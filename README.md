@@ -1,6 +1,3 @@
-# Skyrim-AE-Diagnostics-Suite
-All-in-One Diagnostics, Crash Log Analyzer, In-Game Visual Bug Detector (MIC + OCR) &amp; 1-Click Mutagen/SPID Auto-Patcher for Skyrim AE/SE. Fixes Black Face Bugs (incl. BSAs), 1.6.1130+ ESL (&lt;1.71) headers, Leveled Lists &amp; checks SKSE/DDS/Saves. 100% Offline Mode + Optional Gemini AI. Bilingual (EN/DE).
-
 # ⚔️ Skyrim AE Diagnostics Suite & Auto-Patcher (`SkyrimAutoDiag`)
 
 [![.NET 8.0](https://img.shields.io/badge/.NET%208.0-Windows%20x64-512BD4?logo=dotnet)](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
@@ -76,3 +73,5 @@ Requires the [.NET 8.0 SDK (x64)](https://dotnet.microsoft.com/en-us/download/do
 git clone [https://github.com/](https://github.com/)<DEIN-GITHUB-NAME>/SkyrimAutoDiag.git
 cd SkyrimAutoDiag
 dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=false -p:PublishReadyToRun=false -p:PublishTrimmed=false -p:DebugType=none -p:DebugSymbols=false
+
+
