@@ -1,0 +1,68 @@
+<Window x:Class="SkyrimAutoDiag.SplashScreenWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Skyrim AE Diagnostics Suite - Start"
+        Icon="pack://application:,,,/app.ico"
+        Height="750" Width="860"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Background="#050608">
+
+    <Border BorderBrush="#2D3748" BorderThickness="1.5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <!-- Zeile 0: Platz für das komplette Logo.png inkl. Schriftzug -->
+                <RowDefinition Height="*"/>
+                <!-- Zeile 1: Eigener Bereich darunter für den Disclaimer (überdeckt nichts mehr) -->
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- OBEN (Row 0): Dein Logo.png komplett unverdeckt -->
+            <Image x:Name="SplashLogoImage"
+                   Grid.Row="0"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Center"
+                   Stretch="Uniform"
+                   RenderOptions.BitmapScalingMode="HighQuality"/>
+
+            <!-- Sanfter Übergang nur ganz unten am Bildrand -->
+            <Border Grid.Row="0" VerticalAlignment="Bottom" Height="35" IsHitTestVisible="False">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#00050608" Offset="0.0"/>
+                        <GradientStop Color="#FF050608" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+
+            <!-- UNTEN (Row 1): Zweisprachiger Disclaimer (DE / EN) sauber unterhalb des Titels -->
+            <Border Grid.Row="1"
+                    Margin="24,0,24,20"
+                    Background="#14171D"
+                    BorderBrush="#3B82F6"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="18,14">
+                <StackPanel>
+                    <TextBlock Text="HINWEIS &amp; DISCLAIMER (DE / EN)" 
+                               FontWeight="Bold" FontSize="13" Foreground="#E5C07B" Margin="0,0,0,6"/>
+
+                    <!-- Deutscher Disclaimer -->
+                    <TextBlock Text="DE: AI kann Fehler machen. Die Berichte und Lösungen sollen als Hilfe zur Selbsthilfe dienen. Hinweis: Die Nutzung von Google Gemini ist komplett optional – das Programm verfügt über eine lokale Offline-Diagnose sowie einen lokalen Auto-Patcher und funktioniert auch ohne API-Key! Da jedes Modsetup verschieden ist, kann ich die volle Funktionsweise nur für mein eigenes Setup übernehmen. Viel Spaß." 
+                               TextWrapping="Wrap" Foreground="#E6E6E6" FontSize="12" LineHeight="16.5" Margin="0,0,0,6"/>
+
+                    <!-- Englischer Disclaimer -->
+                    <TextBlock Text="EN: AI can make mistakes. The reports and solutions are intended as a guide to help you help yourself. Note: Using Google Gemini is completely optional – this tool includes a built-in local offline diagnostic engine and auto-patcher that work without any API key! Since every mod setup is different, I can only guarantee full functionality for my own setup. Have fun!" 
+                               TextWrapping="Wrap" Foreground="#ABB2BF" FontStyle="Italic" FontSize="12" LineHeight="16.5" Margin="0,0,0,12"/>
+
+                    <Button Content="Verstanden &amp; Einverstanden / I Understand &amp; Accept" 
+                            Click="ConfirmButton_Click"
+                            Background="#2EA043" BorderBrush="#3FB950" Foreground="White" 
+                            FontWeight="Bold" FontSize="13" Padding="24,9" 
+                            HorizontalAlignment="Center" Cursor="Hand"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
