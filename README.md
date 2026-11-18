@@ -1,2 +1,78 @@
 # Skyrim-AE-Diagnostics-Suite
 All-in-One Diagnostics, Crash Log Analyzer, In-Game Visual Bug Detector (MIC + OCR) &amp; 1-Click Mutagen/SPID Auto-Patcher for Skyrim AE/SE. Fixes Black Face Bugs (incl. BSAs), 1.6.1130+ ESL (&lt;1.71) headers, Leveled Lists &amp; checks SKSE/DDS/Saves. 100% Offline Mode + Optional Gemini AI. Bilingual (EN/DE).
+
+# ⚔️ Skyrim AE Diagnostics Suite & Auto-Patcher (`SkyrimAutoDiag`)
+
+[![.NET 8.0](https://img.shields.io/badge/.NET%208.0-Windows%20x64-512BD4?logo=dotnet)](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+[![Powered by Mutagen](https://img.shields.io/badge/Powered%20by-Mutagen.Bethesda-orange)](https://github.com/Mutagen-Modding/Mutagen)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Nexus Mods](https://img.shields.io/badge/Nexus%20Mods-Mod%20%23199528-D98F40)](https://www.nexusmods.com/skyrimspecialedition/mods/199528)
+
+**SkyrimAutoDiag** is an open-source, all-in-one diagnostic, asset validation, and automated patching utility for **The Elder Scrolls V: Skyrim Anniversary Edition / Special Edition** (Steam 1.6.1170+, GOG 1.6.1179, and 1.5.97 downgrade setups). 
+
+Built with **C# (.NET 8 WPF)** and powered by **Mutagen.Bethesda.Skyrim**, it combines pre-flight environment checks, 1-click ESL header repairs, binary `.bsa`/`.nif`/`.dds` validation, conflict-free NPC/Leveled List patching, and live in-game bug capture under a single bilingual (English / German) Dark-UI dashboard.
+
+> 💡 **100% Standalone Offline Mode:** All core diagnostic rules (`crash_rules.json`), binary scanners, and Mutagen patchers run entirely offline without any external account or API key. An optional integration for the free Google Gemini API is available for multimodal screenshot OCR (*More Informative Console*).
+
+---
+
+## 🌍 English Overview (Deutsch weiter unten)
+
+### 🔥 Core Features
+
+* **🛠️ Synthesis-Compatible Mutagen & SPID Auto-Patcher (`CompatibleSkyrimPatcher.cs`):**
+  * **Automated Black Face Bug Fixer:** Scans both loose files and all `.bsa` archives for `facegeom` `.nif` meshes. Automatically merges NPC visual records (`HeadParts`, `TintLayers`, `FaceMorph`, `TextureLighting`) with winning gameplay stats/perks (e.g., from `Synthesis.esp` or Bashed Patches) into `AutoDiagPatch.esp` (ESL-flagged, Header 1.71) without overwriting your existing patches.
+  * **Leveled List & Container Merger:** Losslessly merges `LVLI` and `CONT` records across your entire load order.
+  * **SPID INI Generator:** Optionally generates a conflict-free `AutoDiag_DISTR.ini` for *Spell Perk Item Distributor (SPID)*.
+* **⚡ 1-Click ESL Header 1.71 Upgrader (`NexusFeaturesService.cs`):**
+  * Fixes the Skyrim AE 1.6.1130+ bug by identifying light plugins (`.esl` / ESL-flagged `.esp`) that contain FormIDs below `0x800` with an outdated `< 1.71` header, upgrading them to `1.71` in one click (with automatic `.bak` backups).
+* **🔍 Deep Binary Pre-Flight Scanner (`SkseAndPluginScanner.cs` & `SkyrimAssetValidator.cs`):**
+  * **Dynamic Address Library Check:** Reads your exact `SkyrimSE.exe` binary version in real time and verifies the matching `versionlib-*.bin`.
+  * **SKSE PE-Header & Rule Check:** Detects accidentally installed 32-bit (LE/Oldrim) DLLs, incompatible AE plugins, and parses `skse64.log` & `Papyrus.0.log` (Stack Dumps).
+  * **Binary `.dds` & `.nif` Validator:** Streams `.nif` meshes from loose files and `.bsa` archives, extracts linked `.dds` texture paths, and checks binary `.dds` headers for corruptions or non-divisible-by-4 dimensions (preventing sudden DirectX 11 / BC7 crashes).
+  * **Savegame Health Check:** Inspects your latest `.ess` save and `.skse` co-save for 0-byte corruption and missing plugins prior to launch.
+  * **Mod Organizer 2 (USVFS) Guard:** Automatically detects running MO2 instances and warns if the tool was launched outside MO2's Virtual File System.
+* **📸 Live In-Game Visual Bug Capture (`MainViewModel.cs`):**
+  * Press your custom hotkey (default `F11`, with audio confirmation) while having an object or NPC selected in *More Informative Console (MIC)*. The tool correlates the FormID with your load order and `.bsa` archives to pinpoint missing meshes, purple textures, or NPC face conflicts.
+* **📦 Automated Pre-Launch `.zip` Backup & HTML Checklists (`BackupAndReportService.cs` & `ToolWorkflowGuideService.cs`):**
+  * Automatically backs up INIs, `plugins.txt`, `loadorder.txt`, generated patches, and your latest working savegame into the `Backup` folder before launching SKSE (with smart rotation keeping the 15 newest archives).
+  * Generates bilingual HTML reports (`Berichte` folder) featuring interactive, checkable step-by-step repair guides for *SSEEdit*, *Quick Auto Clean*, *Pandora/Nemesis*, *BodySlide*, *LOOT*, and *BethINI Pie*—pre-filled with the exact plugin name and FormID.
+* **🌐 Live Community Search & Anonymized Export (`WebSolutionSearchService.cs`):**
+  * Built-in search querying `r/skyrimmods` and local databases, plus a 1-click **Copy for Discord/Reddit** button that automatically strips your Windows username from `C:\Users\<User>\...` paths.
+
+---
+
+### 📂 Repository & Architecture Structure
+
+| File / Folder | Responsibility |
+| :--- | :--- |
+| `SkyrimAutoDiag.csproj` | .NET 8.0 WPF project file (x64, unpacked build for transparent VirusTotal verification). |
+| `CompatibleSkyrimPatcher.cs` | Mutagen-based patch generator (`AutoDiagPatch.esp` & `AutoDiag_DISTR.ini`), BSA FaceGen scanner, and LVLI/CONT merger. |
+| `SkseAndPluginScanner.cs` | PE-header scanner, dynamic Address Library verifier, USVFS detector, Savegame (`.ess`/`.skse`) parser, and Papyrus analyzer. |
+| `SkyrimAssetValidator.cs` | Loose file & `.bsa` stream reader for `.nif` meshes and binary `.dds` texture header dimension validator. |
+| `NexusFeaturesService.cs` | Local offline crash log parser (`crash_rules.json`), 1-click ESL 1.71 header upgrader, registry auto-path detector, and Discord exporter. |
+| `BackupAndReportService.cs` | Pre-launch `.zip` backup engine (with 15-archive rotation) and bilingual HTML report generator. |
+| `ToolWorkflowGuideService.cs` | Generates interactive HTML repair checklists (`tool_workflows.json`) with dynamic FormID/Plugin injection. |
+| `UserManualService.cs` | Manages the expandable 7-chapter bilingual user manual (`user_manual.json`). |
+| `WebSolutionSearchService.cs` | Live community solution search (`r/skyrimmods`) with automatic DE-to-EN modding term translation. |
+| `GeminiDiagnosticsService.cs` | Optional multimodal REST client for Google Gemini (screenshot OCR & callstack correlation with automatic offline fallback). |
+| `MainWindow.xaml` / `MainViewModel.cs` | Bilingual Dark-UI WPF dashboard, async background task runner, modding tool launcher, and animated dragon eye control. |
+| `Datenbanken/` | Auto-generated folder storing `config.json`, `crash_rules.json`, `tool_workflows.json`, and `user_manual.json`. |
+
+---
+
+### 🚀 Installation & Building from Source
+
+#### For End Users (Pre-compiled Release)
+1. Ensure you have the [.NET 8.0 Desktop Runtime (Windows x64)](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) installed.
+2. Download the latest release archive from [GitHub Releases](../../releases) or [Nexus Mods (Mod #199528)](https://www.nexusmods.com/skyrimspecialedition/mods/199528) and extract it outside of `Program Files` (e.g., `C:\ModdingTools\SkyrimAutoDiag\`).
+3. **Mod Organizer 2 Users:** Add `SkyrimAutoDiag.exe` as an **Executable** inside MO2 and always launch it through MO2 so it can access your virtual `Data` folder (USVFS).
+4. In the **"Configuration & Paths"** tab, click **"Auto-Detect Paths"**.
+
+#### Building from Source (For Developers & Verification)
+Requires the [.NET 8.0 SDK (x64)](https://dotnet.microsoft.com/en-us/download/dotnet/8.0). No Visual Studio installation is required.
+
+```powershell
+git clone [https://github.com/](https://github.com/)<DEIN-GITHUB-NAME>/SkyrimAutoDiag.git
+cd SkyrimAutoDiag
+dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=false -p:PublishReadyToRun=false -p:PublishTrimmed=false -p:DebugType=none -p:DebugSymbols=false
